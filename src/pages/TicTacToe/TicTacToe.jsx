@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Board from "../../components/Board/Board";
 import GameOver from "../../components/GameOver/GameOver";
 import { GAME_STATE } from "../../assets/GameState";
+import Reset from "../../components/Reset/Reset";
 
 const PLAYER_X = "X";
 const PLAYER_O = "O";
@@ -78,6 +79,13 @@ const TicTacToe = () => {
     }
   };
 
+  const handleReset = () => {
+    setGameState(GAME_STATE.inProgress);
+    setTiles(Array(9).fill(null));
+    setPlayerTurn(PLAYER_X);
+    setStrikeClass(null);
+  };
+
   useEffect(() => {
     checkResult(tiles, setStrikeClass, setGameState);
   }, [tiles]);
@@ -92,6 +100,7 @@ const TicTacToe = () => {
         strikeClass={strikeClass}
       />
       <GameOver gameState={gameState} />
+      <Reset gameState={gameState} onReset={handleReset} />
     </div>
   );
 };
