@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Board from "../../components/Board/Board";
+import GameOver from "../../components/GameOver/GameOver";
+import { GAME_STATE } from "../../assets/GameState";
 
 const PLAYER_X = "X";
 const PLAYER_O = "O";
@@ -20,7 +22,8 @@ const winningCombinations = [
   { combo: [2, 4, 6], strikeClass: "strike-diagonal-2" },
 ];
 
-const checkResult = (tiles, setStrikeClass) => {
+const checkResult = (tiles, setStrikeClass, setGameState) => {
+  //X or O wins
   for (const winCase of winningCombinations) {
     const { combo, strikeClass } = winCase;
 
@@ -34,7 +37,19 @@ const checkResult = (tiles, setStrikeClass) => {
       tileValue1 === tileValue3
     ) {
       setStrikeClass(strikeClass);
+      if (tileValue1 === PLAYER_X) {
+        setGameState(GAME_STATE.playerXWins);
+      } else {
+        setGameState(GAME_STATE.playerOWins);
+      }
+      return;
     }
+  }
+
+  //Draw case
+  const allTilesFilled = tiles.every((tile) => tile !== null);
+  if (allTilesFilled) {
+    setGameState(GAME_STATE.draw);
   }
 };
 
@@ -42,6 +57,7 @@ const TicTacToe = () => {
   const [tiles, setTiles] = useState(Array(9).fill(null));
   const [playerTurn, setPlayerTurn] = useState(PLAYER_X);
   const [strikeClass, setStrikeClass] = useState();
+  const [gameState, setGameState] = useState(GAME_STATE.inProgress);
 
   const handleTileClick = (index) => {
     if (tiles[index] !== null) {
@@ -59,7 +75,7 @@ const TicTacToe = () => {
   };
 
   useEffect(() => {
-    checkResult();
+    checkResult(tiles, setStrikeClass, setGameState);
   }, [tiles]);
 
   return (
@@ -71,6 +87,7 @@ const TicTacToe = () => {
         onTileClick={handleTileClick}
         strikeClass={strikeClass}
       />
+      <GameOver gameState={gameState} />
     </div>
   );
 };
