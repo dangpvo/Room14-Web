@@ -3,7 +3,7 @@ import Tile from "../Tile/Tile";
 import Strike from "../Strike/Strike";
 import "./Board.css";
 
-const Board = ({ tiles, onTileClick, playerTurn }) => {
+const Board = ({ tiles, onTileClick, playerTurn, strikeClass }) => {
   return (
     <div className="board">
       <Tile
@@ -59,7 +59,7 @@ const Board = ({ tiles, onTileClick, playerTurn }) => {
         value={tiles[8]}
         playerTurn={playerTurn}
       />
-      <Strike />
+      <Strike strikeClass={strikeClass} />
     </div>
   );
 };
