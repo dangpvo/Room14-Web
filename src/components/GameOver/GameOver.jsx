@@ -1,5 +1,6 @@
 import React from "react";
 import { GAME_STATE } from "../../assets/GameState";
+import "./GameOver.css";
 
 const GameOver = ({ gameState }) => {
   switch (gameState) {
